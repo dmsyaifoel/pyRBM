@@ -1,4 +1,6 @@
 from functions import *
+from settings import *
+from properties import *
 class Flexure:
   def __init__(self, name, bodyA, attachpoint_localA, bodyB, attachpoint_localB, properties, dim):
 

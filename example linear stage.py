@@ -1,13 +1,5 @@
-from prbm import PRBM
+from prbm import *
 
-enabletorsion = False
-finite_difference_delta = .5e-3
-optimizer = 'minimize'
-gamma = .85
-kappa_theta = 2.65
-
-# https://www.oceanz.eu/app/uploads/2021/01/Oceanz_3D_printing_PA12.pdf
-properties = {'E': 1650e6} # Pa
 beamsize = 1e-3 # m
 properties['I'] = beamsize**4/12
 properties['A'] = beamsize**2

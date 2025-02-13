@@ -1,14 +1,10 @@
-from prbm import PRBM
+from prbm import *
 
-enabletorsion = True
-finite_difference_delta = .5e-3
-optimizer = 'minimize'
-gamma = .85
-kappa_theta = 2.65
+beamradius = 1e-3 # m
+properties['I'] = np.pi*beamradius**4/2
+properties['A'] = np.pi*beamradius**2
+properties['J'] = np.pi*beamradius**4/2
 
-# https://www.oceanz.eu/app/uploads/2021/01/Oceanz_3D_printing_PA12.pdf
-properties = {'E': 1650e6, # Pa
-              'G': 600e6} # Pa, this is an estimate
 
 q = PRBM(properties)
 
