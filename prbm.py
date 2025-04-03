@@ -84,6 +84,7 @@ class PRBM:
       mp.xlabel('x (m)')
       mp.ylabel('y (m)')
       mp.legend()
+      mp.axis('equal')
       mp.show()
 
     if self.dim == 3:
