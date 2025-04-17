@@ -1,6 +1,7 @@
 from functions import *
 from settings import *
 from properties import *
+
 class Flexure:
   def __init__(self, name, bodyA, attachpoint_localA, bodyB, attachpoint_localB, properties, dim):
 
@@ -64,12 +65,13 @@ class Flexure:
       self.orthvector_globalA = normalize(orthvector) # updated by Body.move()
       self.orthvector_globalB = normalize(orthvector) # updated by Body.move()
 
-
-  def line(self):
+  def line(self): 
+    # return a list of points to plot
     return np.array((self.attachpoint_globalA, self.springpoint_globalA,
                      self.springpoint_globalB, self.attachpoint_globalB)).T
 
-  def energy(self):
+  def energy(self): 
+    # calculate and return energy of the flexure
     vector_global = self.springpoint_globalB - self.springpoint_globalA
     springlen = sl.norm(vector_global)
     unitvector_global = vector_global/springlen
