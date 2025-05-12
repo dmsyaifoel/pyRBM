@@ -10,7 +10,7 @@ class Flexure:
   - data, updated by the attached body.move()
   - energy(), returns the potential energy of the flexure
   '''
-  def __init__(self, name, bodyA, attachpoint_localA, bodyB, attachpoint_localB, dim):
+  def __init__(self, bodyA, attachpoint_localA, bodyB, attachpoint_localB):
     # constant
     self.attachpoint_localA = array(attachpoint_localA)
     self.attachpoint_localB = array(attachpoint_localB)

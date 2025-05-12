@@ -3,9 +3,9 @@ from constants import mm, cm
 import numpy as np
 
 t = 1*mm
-h = 2*mm
-E = 1650e6
+h = 3*mm
 A = t*h
+E = 1650e6
 I = h*t**3/12
 
 s = ((5*mm)**2 + (15*mm)**2)**.5

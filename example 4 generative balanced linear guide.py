@@ -7,9 +7,9 @@ import numpy as np
 import matplotlib.pyplot as mp
 
 t = 1*mm
-h = 2*mm
-E = 1650e6
+h = 3*mm
 A = t*h
+E = 1650e6
 I = h*t**3/12
 
 def f(x, return_l=False):

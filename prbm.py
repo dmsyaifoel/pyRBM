@@ -4,7 +4,7 @@ from backend import zeros, array, minimize
 
 class PRBM:
   '''
-  Contains useful functions for setting up a pseudo rigid body model
+  Contains useful functions for setting up a pseudo rigid body model.
   These functions are just for convenience: it might be easier to set up something manual.
   '''
   def __init__(self, dim):
@@ -29,7 +29,7 @@ class PRBM:
     name = name + str(occurrence)
     self.flexurenames.append(name)
 
-    flexure = Flexure(name, bodyA, attachpoint_localA, bodyB, attachpoint_localB, self.dim)
+    flexure = Flexure(bodyA, attachpoint_localA, bodyB, attachpoint_localB)
     self.flexures[name] = flexure
 
     bodyA.flexures.append(flexure)

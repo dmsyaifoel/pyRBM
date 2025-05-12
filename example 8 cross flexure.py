@@ -2,7 +2,7 @@ from prbm import PRBM
 from constants import mm, cm
 
 t = 1*mm
-h = 2*mm
+h = 3*mm
 E = 1650e6
 A = t*h
 I = h*t**3/12

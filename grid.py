@@ -1,21 +1,19 @@
 from body import Body
 from flexure import Flexure
+from backend import array
 
-class Fem:
+class Grid:
   '''
-  Class containing useful functions for setting up a finite element model based on PRBM.
-
+  Class containing useful functions for setting up a PRBM grid.
   These functions are just for convenience: it might be easier to set up something manual.
   '''
-  def __init__(self, m, n, dx, dy, E, h):
+  def __init__(self, m, n, dx, dy):
     self.bodies = []
     self.flexures = []
-    self.h = h
-    self.E = E
 
     for i in range(m):
       for j in range(n):
-        self.bodies.append(Body((i*dx, j*dy)))
+        self.bodies.append(Body(str(i) + str(j), (i*dx, j*dy), 2))
 
     for i in range(m):
       for j in range(n - 1):
@@ -35,13 +33,8 @@ class Fem:
         bodyB = self.bodies[(i + 1)*n + j + 1]
         self.add_flexure(bodyA, bodyB)
 
-    self.clear()
-
-  def clear(self):
     self.fixed = []
     self.forced = []
-    for body in self.bodies:
-      body.force = array((0, 0))
     self.targeted = []
 
   def show(self, showflexures=False, tlist=None, tmin=None, tmax=None):
@@ -53,12 +46,11 @@ class Fem:
 
     if showflexures:
       for i, flexure in enumerate(self.flexures):
-        a, b, c, d = flexure.line()
+        a, b, c, d = flexure.attachpoint_globalA, flexure.springpoint_globalA, flexure.springpoint_globalB, flexure.attachpoint_globalB
         if tlist is None:
           mp.plot((a[0], b[0], c[0], d[0]), (a[1], b[1], c[1], d[1]), color=cols[0])
         else:
           mp.plot((a[0], b[0], c[0], d[0]), (a[1], b[1], c[1], d[1]), color=cols[0], alpha=(tlist[i] - tmin)/(tmax - tmin))
-
 
     for i in self.fixed:
       pos = self.bodies[i].position
@@ -76,7 +68,7 @@ class Fem:
     mp.show()
 
   def add_flexure(self, bodyA, bodyB):
-    flexure = Flexure(bodyA, bodyB)
+    flexure = Flexure(bodyA, (0, 0), bodyB, (0, 0))
     self.flexures.append(flexure)
     bodyA.flexures.append(flexure)
     bodyA.which.append(True)
@@ -127,13 +119,13 @@ class Fem:
           if 'fix' in attribute:
             self.fixed.append(i)
           if 'move' in attribute:
-            body.move(body.position0 + matrix(vector))
+            body.move(body.position0 + array(vector))
           if 'force' in attribute:
             self.forced.append(i)
-            body.force = matrix(vector)
+            body.forces.append(((0, 0), array(vector)))
           if 'target' in attribute:
             self.targeted.append(i)
-            body.target = body.position0 + matrix(vector)
+            body.target = body.position0 + array(vector)
 
   def ndof(self):
     return 3*(len(self.bodies) - len(self.fixed))
@@ -141,10 +133,21 @@ class Fem:
   def nflex(self):
     return len(self.flexures)
 
-  def energy(self, tlist):
-    fen = sum([flexure.energy(self.h*tlist[i], self.E, self.h*tlist[i]**3/12) for i, flexure in enumerate(self.flexures)])
+  def energy(self, Alist, Elist, Ilist):
+    fen = sum([flexure.energy(Alist[i], Elist[i], Ilist[i]) for i, flexure in enumerate(self.flexures)])
     ben = sum([body.energy() for body in self.bodies])
     return fen + ben
+
+  def x_to_energy(self, x, Alist, Elist, Ilist):
+    i = 0
+    for j in range(len(self.bodies)):
+      if j not in self.fixed:
+        body = self.bodies[j]
+        body.move((body.position0[0] + x[i], body.position0[1] + x[i + 1]), x[i + 2])
+        i += 3
+
+    return self.energy(Alist, Elist, Ilist)
+
 
   # def targetloss(self):
   #   loss = 0

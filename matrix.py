@@ -50,11 +50,5 @@ class Matrix:
   def T(self):
     return matrix([[self.l[i][j] for i in range(self.dim[0])] for j in range(self.dim[1])])
 
-  def dot(self, other):
-    return (self.T()@other)[0]
-
   def __matmul__(self, other):
     return matrix([[sum([self.l[i][k]*other.l[k][j] for k in range(self.dim[1])]) for j in range(other.dim[1])]for i in range(self.dim[0])])
-
-  def grad(self, dic, n, cache):
-    return matrix([self.l[i][0].grad(dic, n, cache) for i in range(len(self.l))])
