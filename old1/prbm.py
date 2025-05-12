@@ -53,7 +53,7 @@ class PRBM:
     bodyB.letters.append('B')
 
   def move(self, bodyname, position, angles=None): 
-    # move a body
+    # move a body.py
     for body in self.bodies:
       if body.name == bodyname:
         if angles is None: body.move(position)

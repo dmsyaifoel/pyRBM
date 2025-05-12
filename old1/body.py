@@ -25,7 +25,7 @@ class Body:
     self.reference_points = []
 
   def move(self, position, angles=None): 
-    # move a body to a pose
+    # move a body.py to a pose
     self.has_moved = True
     self.position = np.array(position)
     if angles is None: self.angles = self.angles0
@@ -53,7 +53,7 @@ class Body:
     self.has_moved = False
 
   def energy(self): 
-    # calculate the potential energy of a body due to external forces
+    # calculate the potential energy of a body.py due to external forces
     energy = 0
     for attachpoint_local, vector in self.forces:
       attachpoint_global = self.rotmat@attachpoint_local + self.position
