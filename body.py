@@ -1,5 +1,5 @@
-from functions import rotmat
-from backend import array, zeros, dot
+from functions import rotmat, zeros, dot
+from backend import array
 
 class Body:
   '''
@@ -63,4 +63,4 @@ class Body:
     return energy
 
   def line(self):
-    return [self.rotmat@point + self.position for point in self.points]
+    return [self.rotmat@array(point) + self.position for point in self.points]

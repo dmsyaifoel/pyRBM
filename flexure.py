@@ -1,6 +1,6 @@
 from constants import gamma, kappa_theta
-from backend import array, norm
-from functions import angle
+from backend import array
+from functions import angle, norm
 
 class Flexure:
   '''
@@ -16,8 +16,8 @@ class Flexure:
     self.attachpoint_localB = array(attachpoint_localB)
 
     # do not need to be remembered besides len0, which is constant
-    attachpoint_globalA0 = bodyA.position + attachpoint_localA
-    attachpoint_globalB0 = bodyB.position + attachpoint_localB
+    attachpoint_globalA0 = bodyA.position + self.attachpoint_localA
+    attachpoint_globalB0 = bodyB.position + self.attachpoint_localB
 
     vector_global0 = attachpoint_globalB0 - attachpoint_globalA0
     self.len0 = norm(vector_global0)

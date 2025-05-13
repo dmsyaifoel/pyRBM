@@ -1,4 +1,4 @@
-from backend import array, sin, cos, acos, dot, norm
+from backend import array, sin, cos, acos
 
 # 2d rotation matrix for angle t
 def R(t): return array([[cos(t), -sin(t)],
@@ -24,7 +24,16 @@ def RZ(t): # 3d rotation matrix around z
                    [sin(t), cos(t), 0],
                    [0, 0, 1]])
 
+def dot(a, b):
+  return sum([a[i]*b[i] for i in range(len(a))])
+
+def norm(v):
+  return dot(v, v)**.5
+
 def angle(a, b, atol=1e-6): # angle between vector a and b
   if norm(a - b) < atol:
     return 0
   return acos(dot(a, b)/norm(a)/norm(b))
+
+def zeros(n):
+  return n*[0]

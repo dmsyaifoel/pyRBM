@@ -1,6 +1,7 @@
 from body import Body
 from flexure import Flexure
-from backend import zeros, array, minimize
+from functions import zeros
+from backend import array, minimize
 
 class PRBM:
   '''

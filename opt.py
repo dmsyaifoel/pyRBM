@@ -58,3 +58,6 @@ def linesearch(f, x0, atol=1e-6, maxloop=1000, frac=.9):
     if dist(xn, x0) < atol: return xn, i
     x0 = xn
   return xn, i
+
+def minimize(f, x0):
+  pass
