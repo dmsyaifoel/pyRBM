@@ -83,7 +83,7 @@ class Sym:
   def val(self, dic):
     return dic[self.name]
 
-  def grad(self, dic, n, cache):
+  def valgrad(self, dic, n, cache):
     if self.key in cache:
       return cache[self.key]
     grad = zeros(n)
@@ -113,13 +113,13 @@ class Add(Sym):
       val += i.val(dic)
     return val
 
-  def grad(self, dic, n, cache):
+  def valgrad(self, dic, n, cache):
     if self.key in cache:
       return cache[self.key]
     val = self.c
     grad = zeros(n)
     for i in self.l:
-      v_, g_ = i.grad(dic, n, cache)
+      v_, g_ = i.valgrad(dic, n, cache)
       val += v_
       for i in range(n):
         grad[i] += g_[i]
@@ -146,7 +146,7 @@ class Mul(Sym):
       val *= i.val(dic)
     return val
 
-  def grad(self, dic, n, cache):
+  def valgrad(self, dic, n, cache):
     if self.key in cache:
       return cache[self.key]
     grad = zeros(n)
@@ -154,7 +154,7 @@ class Mul(Sym):
     grads = []
     val = self.c
     for i in self.l:
-      v_, g_ = i.grad(dic, n, cache)
+      v_, g_ = i.valgrad(dic, n, cache)
       val *= v_
       vals.append(v_)
       grads.append(g_)
@@ -180,10 +180,10 @@ class Pow(Sym):
   def val(self, dic):
     return self.a.val(dic)**self.b
 
-  def grad(self, dic, n, cache):
+  def valgrad(self, dic, n, cache):
     if self.key in cache:
       return cache[self.key]
-    va, ga = self.a.grad(dic, n, cache)
+    va, ga = self.a.valgrad(dic, n, cache)
     val = va**self.b
     grad = [self.b*va**(self.b - 1)*ga[i] for i in range(n)]
     cache[self.key] = (val, grad)
@@ -200,10 +200,10 @@ class Sin(Sym):
   def val(self, dic):
     return _sin(self.a.val(dic))
 
-  def grad(self, dic, n, cache):
+  def valgrad(self, dic, n, cache):
     if self.key in cache:
       return cache[self.key]
-    va, ga = self.a.grad(dic, n, cache)
+    va, ga = self.a.valgrad(dic, n, cache)
     val = _sin(va)
     grad = [_cos(va)*ga[i] for i in range(n)]
     cache[self.key] = (val, grad)
@@ -220,10 +220,10 @@ class Cos(Sym):
   def val(self, dic):
     return _cos(self.a.val(dic))
 
-  def grad(self, dic, n, cache):
+  def valgrad(self, dic, n, cache):
     if self.key in cache:
       return cache[self.key]
-    va, ga = self.a.grad(dic, n, cache)
+    va, ga = self.a.valgrad(dic, n, cache)
     val = _cos(va)
     grad = [-_sin(va)*ga[i] for i in range(n)]
     cache[self.key] = (val, grad)
@@ -245,11 +245,11 @@ class Acos(Sym):
       return _pi
     return _acos(v)
 
-  def grad(self, dic, n, cache):
+  def valgrad(self, dic, n, cache):
     key = self.key
     if key in cache:
       return cache[key]
-    va, ga = self.a.grad(dic, n, cache)
+    va, ga = self.a.valgrad(dic, n, cache)
     if va >= 1:
       val, grad = 0, zeros(n)
     elif va <= -1:
@@ -287,11 +287,14 @@ def syms(s):
 def symlist(name, n):
   return [sym(name + str(j)) for j in range(n)]
 
-def parsedict(dic):
+def parsedic(dic):
+  '''
+  Turns a dictionary containing symlists into a dictionary of individual syms
+  '''
   dic2 = dict()
   dic3 = dict()
   for key, item in dic.items():
-    if isconst(item):
+    if not isinstance(item, (list, tuple)):
       dic2[key] = item
     else:
       item = [float(i) for i in item]

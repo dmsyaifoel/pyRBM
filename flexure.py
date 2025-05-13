@@ -1,6 +1,5 @@
 from constants import gamma, kappa_theta
-from backend import array
-from functions import angle, norm
+from functions import array, angle, norm
 
 class Flexure:
   '''

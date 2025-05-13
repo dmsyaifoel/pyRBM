@@ -6,15 +6,18 @@ def deriv(f, x, dx=1e-6):
   # first derivative using central finite difference
   return (f(x + dx) - f(x - dx))/2/dx
 
-def rootscalar(f, x0=0, atol=1e-6, maxloop=1000, divtol=1e-50):
+def root_scalar(f, x0=0, atol=1e-6, maxloop=1000, divtol=1e-50):
   # find the root of a scalar function using the newton method
+  xn = 0
+  fx0, d = f(x0), deriv(f, x0)
   for i in range(maxloop):
-    d = deriv(f, x0)
-    if abs(d) < divtol: return x0, i
-    xn = x0 - f(x0)/d
-    if abs(xn - x0) < atol: return xn, i
+    if abs(d) < divtol: return x0, 'divtol'
+    xn = x0 - fx0/d
+    fxn, dn = f(xn), deriv(f, xn)
+    if abs(fx0 - fxn) < atol: return xn, i
     x0 = xn
-  return xn, i
+    fx0, d = fxn, dn
+  return xn, 'maxloop'
 
 def deriv2(f, x, dx=1e-6):
   # second derivative using central finite difference
@@ -24,40 +27,52 @@ def derivs(f, x, dx=1e-6):
   # both derivatives using 3 function evaluations
   fp = f(x + dx)
   fc = f(x)
-  fm = (f - dx)
-  return  (fp - fm)/2/dx, (fp - 2*fc + fm)/dx**2
+  fm = f(x - dx)
+  return  fc, (fp - fm)/2/dx, (fp - 2*fc + fm)/dx**2
 
-def minimizescalar(f, x0=0, atol=1e-6, maxloop=1000, divtol=1e-50):
+def minimize_scalar(f, x0=0, atol=1e-6, maxloop=1000, divtol=1e-50):
+  xn = 0
+  fx0, d1, d2 = derivs(f, x0)
   for i in range(maxloop):
-    d1, d2 = derivs(f, x0)
-    if abs(d2) < divtol: return x0, i
+    if abs(d2) < divtol: return x0, 'divtol'
     xn = x0 - d1/d2
-    if abs(xn - x0) < atol: return xn, i
+    fxn, d1n, d2n = derivs(f, xn)
+    if abs(fxn - fx0) < atol: return xn, i
     x0 = xn
-  return xn, i
+    fx0, d1, d2 = fxn, d1n, d2n
+  return xn, 'maxloop'
 
-def gradientdescent(f, x0, atol=1e-6, maxloop=1000, frac=1e-3):
+# def gradient_descent(fgrad, x0, frac, atol=1e-6, maxloop=1000):
+#   x0 = list(x0)
+#   dim = len(x0)
+#   xn = dim*[0]
+#   fx0, gx0 = fgrad(x0)
+#   for i in range(maxloop):
+#     xn = [x0[i] - frac*gx0[i] for i in range(dim)]
+#     fxn, gxn = fgrad(xn)
+#     if abs(fxn - fx0) < atol: return xn, i
+#     x0 = xn
+#     fx0 = fxn
+#     gx0 = gxn
+#   return xn, 'maxloop'
+
+def line_search(f, fgrad, x0, atol=1e-6, innertol=1e-3, maxloop=1000):
   x0 = list(x0)
   dim = len(x0)
+  xn = dim*[0]
+  fx0, gx0 = fgrad(x0)
   for i in range(maxloop):
-    y, grad = f.grad(x0)
-    xn = [x0[i] - frac*grad[i] for i in range(dim)]
-    if dist(xn, x0) < atol: return xn, i
-    x0 = xn
-  return xn, i
-
-def linesearch(f, x0, atol=1e-6, maxloop=1000, frac=.9):
-  x0 = list(x0)
-  dim = len(x0)
-  for i in range(maxloop):
-    y, grad = f.grad(x0)
-    xt = lambda t: [x0[j] + grad[j]*t for j in range(dim)]
+    xt = lambda t: [x0[j] + gx0[j]*t for j in range(dim)]
     func = lambda t: f(xt(t))
-    tn, _ = minimizescalar(func, 0, atol=1e-3)
-    xn = xt(tn*frac)
-    if dist(xn, x0) < atol: return xn, i
+    tn, dummy = minimize_scalar(func, 0, innertol)
+    xn = xt(tn)
+    fxn, gxn = fgrad(xn)
+    print(i, fxn)
+    if abs(fxn - fx0) < atol: return xn, i
     x0 = xn
-  return xn, i
+    fx0, gx0 = fxn, gxn
+  return xn, 'maxloop'
 
 def minimize(f, x0):
   pass
+

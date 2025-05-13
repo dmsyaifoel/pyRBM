@@ -52,6 +52,3 @@ class Matrix:
 
   def __matmul__(self, other):
     return matrix([[sum([self.l[i][k]*other.l[k][j] for k in range(self.dim[1])]) for j in range(other.dim[1])]for i in range(self.dim[0])])
-
-def dot(a, b):
-  return

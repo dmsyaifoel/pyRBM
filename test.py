@@ -1,7 +1,15 @@
-from matrix import matrix
+from sym import symlist, sin, cos, parsedic
+from opt import root_scalar, minimize_scalar, line_search
 
-A = matrix([[1, 2, 3],
-            [4, 5, 6],
-            [7, 8, 9]])
+x = symlist('x', 10)
 
-print(2*A/3 + A@A - A)
+y = sum([100*(x[i+1] - x[i]**2)**2 + (1 - x[i])**2 for i in range(9)])
+
+def g(x):
+  return y.valgrad(parsedic({'x':list(x)}), 10, {})[1]
+
+def f(x):
+  return y.val(parsedic({'x':list(x)}))
+
+from scipy.optimize import minimize
+print(minimize(f, 10*[0], jac=g))

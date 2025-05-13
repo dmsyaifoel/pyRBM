@@ -1,5 +1,4 @@
-from functions import rotmat, zeros, dot
-from backend import array
+from functions import rotmat, array, zeros, dot
 
 class Body:
   '''
@@ -35,7 +34,6 @@ class Body:
 
   def move(self, position, angles=None):
     # move a body to a pose
-    # print(f'moving {self.name} to {position}')
     self.position = array(position)
     if angles is None: self.angles = self.angles0
     else: self.angles = angles

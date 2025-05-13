@@ -1,6 +1,6 @@
 from body import Body
 from flexure import Flexure
-from backend import array
+from functions import array
 
 class Grid:
   '''
@@ -68,7 +68,7 @@ class Grid:
     mp.show()
 
   def add_flexure(self, bodyA, bodyB):
-    flexure = Flexure(bodyA, (0, 0), bodyB, (0, 0))
+    flexure = Flexure(bodyA, array((0, 0)), bodyB, array((0, 0)))
     self.flexures.append(flexure)
     bodyA.flexures.append(flexure)
     bodyA.which.append(True)
@@ -122,7 +122,7 @@ class Grid:
             body.move(body.position0 + array(vector))
           if 'force' in attribute:
             self.forced.append(i)
-            body.forces.append(((0, 0), array(vector)))
+            body.forces.append((array((0, 0)), array(vector)))
           if 'target' in attribute:
             self.targeted.append(i)
             body.target = body.position0 + array(vector)
@@ -137,6 +137,13 @@ class Grid:
     fen = sum([flexure.energy(Alist[i], Elist[i], Ilist[i]) for i, flexure in enumerate(self.flexures)])
     ben = sum([body.energy() for body in self.bodies])
     return fen + ben
+
+  def move(self, q):
+    i = 0
+    for j, body in enumerate(self.bodies):
+      if not j in self.fixed:
+        body.move(array((q[i], q[i+1])), q[i+2])
+        i += 3
 
   def x_to_energy(self, x, Alist, Elist, Ilist):
     i = 0

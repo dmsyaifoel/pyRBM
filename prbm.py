@@ -1,7 +1,6 @@
 from body import Body
 from flexure import Flexure
-from functions import zeros
-from backend import array, minimize
+from functions import zeros, array, minimize
 
 class PRBM:
   '''
@@ -18,6 +17,7 @@ class PRBM:
   def add_body(self, name, position=None):
     self.bodies[name] = Body(name, position, self.dim)
     self.bodynames.append(name)
+    self.bodies[name].points.append(zeros(self.dim))
 
   def add_flexure(self, bodynameA, attachpoint_localA, bodynameB, attachpoint_localB):
     bodyA = self.bodies[bodynameA]
