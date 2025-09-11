@@ -9,13 +9,13 @@ dx, dy = 10*cm/N, 10*cm/N
 
 f = Grid(m, n, dx, dy, )
 f.set_attribute('fix', 'x<1mm')
-f.set_attribute('force', '.06<x,.06<y', (-1, -1))
+f.set_attribute('force', '.06<x,.06<y', (0, -5))
 nflex = f.nflex()
 ndof = f.ndof()
 
 
 h = 2*mm
-t = [random()*mm for i in range(nflex)]
+t = [random()**3*mm for i in range(nflex)]
 A = [h*t_ for t_ in t]
 E = 1650e6
 I = [h*t_**3/12 for t_ in t]

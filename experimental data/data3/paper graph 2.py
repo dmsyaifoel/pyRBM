@@ -41,7 +41,7 @@ e2 = p.energy(A, E, I)
 f = abs(e1 - e2)/(.1*mm)
 print(f)
 
-data = np.genfromtxt('large test 4.csv', delimiter = ',', skip_header=1)
+data = np.genfromtxt('large test 4.csv', delimiter =',', skip_header=1)
 
 n = 10
 dat_ = [0]*18 + [f*((i+1)/n) for i in range(n)] + [f]*19 + [f - f*(i+1)/(n-1) for i in range(n-1)] + [0]*5

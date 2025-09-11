@@ -65,7 +65,7 @@ p.solve_pose('B', A, E, I)
 e4 = p.energy(A, E, I)
 f4 = abs(e1 - e4)/dd
 
-data = np.genfromtxt('medium test 11.csv', delimiter = ',', skip_header=1)
+data = np.genfromtxt('medium test 11.csv', delimiter =',', skip_header=1)
 
 
 n1=4
