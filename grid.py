@@ -1,6 +1,6 @@
 from body import Body
 from flexure import Flexure
-from functions import array
+from numpy import array
 
 class Grid:
   '''
@@ -154,10 +154,3 @@ class Grid:
         i += 3
 
     return self.energy(Alist, Elist, Ilist)
-
-
-  # def targetloss(self):
-  #   loss = 0
-  #   for i in self.targeted:
-  #     loss += dist(self.bodies[i].position, self.bodies[i].target)**2
-  #   return loss

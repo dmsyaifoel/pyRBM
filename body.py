@@ -1,4 +1,5 @@
-from functions import rotmat, array, zeros, dot
+from functions import rotmat
+from numpy import array, zeros, dot
 
 class Body:
   '''

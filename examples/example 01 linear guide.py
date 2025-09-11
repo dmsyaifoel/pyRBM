@@ -23,6 +23,5 @@ l.show()
 l.add_force('C', (1, 2), (0, 0))
 l.solve_pose('BC', A, E, I)
 
-l.show()
-
 print(l.bodies['C'].position)
+l.show()

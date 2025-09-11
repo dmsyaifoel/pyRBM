@@ -1,6 +1,6 @@
 from constants import cm, mm
 from grid import Grid
-from functions import zeros
+from numpy import zeros
 
 N = 7
 m, n = N, N
@@ -37,4 +37,4 @@ from scipy.optimize import minimize
 sol = minimize(func, zeros(ndof), callback=cb, method='slsqp')
 print(sol)
 func(sol.x)
-f.show(1)
+f.show()

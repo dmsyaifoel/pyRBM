@@ -1,6 +1,7 @@
 from body import Body
 from flexure import Flexure
-from functions import zeros, array, minimize
+from numpy import zeros, array
+from scipy.optimize import minimize
 
 class PRBM:
   '''
@@ -51,14 +52,12 @@ class PRBM:
   def show(self, args=None):
     # plot the prbm
 
-    import numpy as np
-
-    lines = [np.array([flexure.attachpoint_globalA,
+    lines = [array([flexure.attachpoint_globalA,
                        flexure.springpoint_globalA,
                        flexure.springpoint_globalB,
                        flexure.attachpoint_globalB]).T for flexure in self.flexures.values()]
 
-    lines2 = [np.array(body.line()).T for body in self.bodies.values()]
+    lines2 = [array(body.line()).T for body in self.bodies.values()]
 
     if self.dim == 2:
       import matplotlib.pyplot as mp

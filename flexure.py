@@ -1,5 +1,7 @@
 from constants import gamma, kappa_theta
-from functions import array, angle, norm
+from functions import angle
+from numpy import array
+from numpy.linalg import norm
 
 class Flexure:
   '''
@@ -51,7 +53,6 @@ class Flexure:
     # calculate and return energy of the flexure
     kappa = gamma*kappa_theta*E*I/self.len0
     k = E*A/self.springlen0
-
     vector_global = self.springpoint_globalB - self.springpoint_globalA
     springlen = norm(vector_global)
     unitvector_global = vector_global/springlen
