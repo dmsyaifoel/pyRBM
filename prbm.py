@@ -49,6 +49,13 @@ class PRBM:
       else:
           self.bodies[bodyname].move(position, angles)
 
+  def print(self, A=None, E=None, I=None):
+    for bodyname in self.bodynames:
+      print('Body', bodyname, 'position', self.bodies[bodyname].position, 'angles', self.bodies[bodyname].position, energy, self.bodies[bodyname].energy())
+    if A is not None and E is not None and I is not None:
+      for flexurename in self.flexurenames:
+        print('Flexure', flexurename, self.flexures[flexurename].energy(A, E, I))
+
   def show(self, args=None):
     # plot the prbm
 
