@@ -51,7 +51,11 @@ class PRBM:
 
   def print(self, A=None, E=None, I=None):
     for bodyname in self.bodynames:
-      print('Body', bodyname, 'position', self.bodies[bodyname].position, 'angles', self.bodies[bodyname].position, energy, self.bodies[bodyname].energy())
+      print('Body', bodyname)
+      print('Position', self.bodies[bodyname].position)
+      print('Angles', self.bodies[bodyname].angles)
+      print('Energy', self.bodies[bodyname].energy())
+      print()
     if A is not None and E is not None and I is not None:
       for flexurename in self.flexurenames:
         print('Flexure', flexurename, self.flexures[flexurename].energy(A, E, I))
