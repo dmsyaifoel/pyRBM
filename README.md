@@ -1,7 +1,7 @@
 # pyRBM
 ## Kinematics-free simulation of 2D and 3D compliant mechanisms using pseudorigidbody modelling (PRBMs)
 
-USDAGE: place all .py files in one folder. Then run a new .py file within that folder with:
+USAGE: place all .py files in one folder. Then run a new .py file within that folder with:
 
 ```python
 from prbm import PRBM
