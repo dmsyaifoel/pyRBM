@@ -44,7 +44,7 @@ from numpy import pi
 r = 1*mm
 A = pi*r**2 # cross section area of a flexure, in meter**2
 E = 1650e6 # E modulus of the material, in Pa
-I = pi/2*r**4 # second moment of area of a flexure, in m**4
+I = pi/4*r**4 # second moment of area of a flexure, in m**4
 q.solve_pose('B', A, E, I) # will only move B. Leaving method empty will use the default method of scipy.optimize.minimize
 
 # Note that if you have multiple 'free' bodies to solve, you can use p.solve_pose('BCDEF', A, E, I) if each bodyname is a single letter
