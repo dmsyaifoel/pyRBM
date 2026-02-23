@@ -12,10 +12,13 @@ q = PRBM(3) # for a 3D model
 ```
 Dependencies: numpy and scipy.
 
-For 2D plots you additionally need matplotlib, and for 3D plots, you additionally need plotly.
+For 2D plots you additionally need matplotlib, and for 3D plots you additionally need plotly.
 
 Useful functions:
 ```python
+cm = 1e-2 # nice to define
+mm = 1e-3
+
 # q.add_body(bodyname, position) adds a body with a given name to a given position, for example:
 q.add_body('A') # leaving out the position will place it at the origin
 q.add_body('B', (0, 0, 2*cm)) # body placed 2 cm above body A
