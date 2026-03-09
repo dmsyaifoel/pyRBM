@@ -332,5 +332,4 @@ class PRBM:
     self.solution = minimize(optimize_function, x0, method=method)
 
     x = self.solution.x
-    print(x)
     optimize_function(x) # move bodies to the optimal pose
