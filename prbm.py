@@ -1,4 +1,4 @@
-from numpy import zeros, array, sin, cos, acos, dot
+from numpy import zeros, array, sin, cos, acos, dot, eye
 from numpy.linalg import norm
 from scipy.optimize import minimize
 
@@ -330,3 +330,23 @@ class PRBM:
 
     x = self.solution.x
     optimize_function(x) # move bodies to the optimal pose
+  def solve_reactions(self, bodynames, end_effector, position, angles=None, delta=1e-6):
+    if angles is None: 
+      if self.dim == 2: angles = 0
+      if self.dim == 3: angles = zeros(3)
+
+    if self.dim == 2: I = np.eye(3)
+    if self.dim == 3: I = np.eye(6)
+    
+    reactions = []
+    for offset in I:
+      p.move(end_effector, position + offset[:self.dim]*delta, offset[self.dim:]*delta):
+      p.solve_pose(bodynames, A, E, I)
+      en1 = p.energy(A, E, I)
+      p.move(end_effector, position - offset[:self.dim]*delta, -offset[self.dim:]*delta):
+      p.solve_pose(bodynames, A, E, I)
+      en2 = p.energy(A, E, I)
+      reactions.append((en2 - en1)/2/delta)
+      
+    return reactions
+    
