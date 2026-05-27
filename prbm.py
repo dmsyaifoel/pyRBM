@@ -330,20 +330,25 @@ class PRBM:
 
     x = self.solution.x
     optimize_function(x) # move bodies to the optimal pose
+    
   def solve_reactions(self, bodynames, end_effector, position, angles=None, delta=1e-6):
     if angles is None: 
       if self.dim == 2: angles = 0
       if self.dim == 3: angles = zeros(3)
 
+    position = array(position)
+
     if self.dim == 2: I = np.eye(3)
-    if self.dim == 3: I = np.eye(6)
+    if self.dim == 3: 
+      I = np.eye(6)
+      angles = array(angles)
     
     reactions = []
     for offset in I:
-      p.move(end_effector, position + offset[:self.dim]*delta, offset[self.dim:]*delta):
+      p.move(end_effector, position + offset[:self.dim]*delta, angles + offset[self.dim:]*delta):
       p.solve_pose(bodynames, A, E, I)
       en1 = p.energy(A, E, I)
-      p.move(end_effector, position - offset[:self.dim]*delta, -offset[self.dim:]*delta):
+      p.move(end_effector, position - offset[:self.dim]*delta, angles - offset[self.dim:]*delta):
       p.solve_pose(bodynames, A, E, I)
       en2 = p.energy(A, E, I)
       reactions.append((en2 - en1)/2/delta)
