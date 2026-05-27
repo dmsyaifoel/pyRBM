@@ -174,6 +174,7 @@ class PRBM:
     self.flexurenames = []
 
   def add_body(self, name, position=None):
+    if position is None: position = zeros(self.dim)
     self.bodies[name] = Body(name, position, self.dim)
     self.bodynames.append(name)
     self.bodies[name].points.append(zeros(self.dim))
