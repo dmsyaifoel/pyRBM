@@ -268,13 +268,9 @@ class PRBM:
   # NOTE: added forces and torques are fixed in the global reference frame
   def add_force(self, bodyname, vector, attachpoint_local=None):
     body = self.bodies[bodyname]
-    if attachpoint_local is None:
-      attachpoint_local = zeros(self.dim)
-    else:
-      body.points.append(attachpoint_local)
+    if attachpoint_local is None: attachpoint_local = zeros(self.dim)
+    else: body.points.append(attachpoint_local)
     body.forces.append((attachpoint_local, vector))
-
-
 
   def add_torque_2D(self, bodyname, torque):
     self.add_force(bodyname, (0, -torque))
