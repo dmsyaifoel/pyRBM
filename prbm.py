@@ -331,27 +331,35 @@ class PRBM:
     x = self.solution.x
     optimize_function(x) # move bodies to the optimal pose
     
-  def solve_reactions(self, bodynames, end_effector, position, angles=None, delta=1e-6):
-    if angles is None: 
-      if self.dim == 2: angles = 0
-      if self.dim == 3: angles = zeros(3)
-
+  def solve_reactions(self, A, E, I, bodynames, end_effector, position, angles=None, delta=1e-9):
     position = array(position)
 
-    if self.dim == 2: I = np.eye(3)
-    if self.dim == 3: 
-      I = np.eye(6)
+    if self.dim == 2:
+      if angles is None: angles = 0
+
+      reactions = []
+      for offset in eye(3):
+        self.move(end_effector, position + offset[:2]*delta, angles + offset[-1]*delta)
+        self.solve_pose(bodynames, A, E, I)
+        en1 = self.energy(A, E, I)
+        self.move(end_effector, position - offset[:2]*delta, angles - offset[-1]*delta)
+        self.solve_pose(bodynames, A, E, I)
+        en2 = self.energy(A, E, I)
+        reactions.append((en2 - en1)/2/delta)
+
+    if self.dim == 3:
+      if angles is None: angles = zeros(3)
       angles = array(angles)
-    
-    reactions = []
-    for offset in I:
-      p.move(end_effector, position + offset[:self.dim]*delta, angles + offset[self.dim:]*delta):
-      p.solve_pose(bodynames, A, E, I)
-      en1 = p.energy(A, E, I)
-      p.move(end_effector, position - offset[:self.dim]*delta, angles - offset[self.dim:]*delta):
-      p.solve_pose(bodynames, A, E, I)
-      en2 = p.energy(A, E, I)
-      reactions.append((en2 - en1)/2/delta)
+
+      reactions = []
+      for offset in eye(6):
+        self.move(end_effector, position + offset[:3]*delta, angles + offset[3:]*delta)
+        self.solve_pose(bodynames, A, E, I)
+        en1 = self.energy(A, E, I)
+        self.move(end_effector, position - offset[:3]*delta, angles - offset[3:]*delta)
+        self.solve_pose(bodynames, A, E, I)
+        en2 = self.energy(A, E, I)
+        reactions.append((en2 - en1)/2/delta)
       
-    return reactions
+    return array(reactions)
     

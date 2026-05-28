@@ -31,3 +31,4 @@ p.solve_pose('BC', A, E, I)
 p.print(A, E, I)
 p.show()
 
+print(p.solve_reactions(A, E, I, 'B', 'C', (0, 0, 25*mm)))

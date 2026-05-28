@@ -27,3 +27,5 @@ l.solve_pose('BC', A, E, I)
 
 l.print(A, E, I)
 l.show()
+
+print(l.solve_reactions(A, E, I, 'B', 'C', (5*mm, 0)))
